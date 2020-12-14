@@ -25,8 +25,9 @@ def instalar_sistema_base():
 		os.system("mkfs.ext4 " + part_system)
 		os.system("mkfs.fat " + part_efi)
 		os.system("mount " + part_system + " /mnt")
-		os.system("mkdir /mnt/efi")
-		os.system("mount " + part_efi + " /mnt/efi")
+		os.system("mkdir /mnt/boot")
+		os.system("mkdir /mnt/boot/efi")
+		os.system("mount " + part_efi + " /mnt/boot/efi")
 	def particionado_cifrado():
 		pass
 	def particionado_lvm_cifrado(hostname):
@@ -34,8 +35,20 @@ def instalar_sistema_base():
 	#----- Funciones de instalación -------------#
 	def instalar_sistema_y_efi():
 		os.system("pacstrap /mnt base linux linux-firmware")
+		os.system("genfstab -U /mnt >> /mnt/etc/fstab")
+		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
+		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 
-
+	def configuracion_basica():
+		os.system("clear")
+		print("Desea activar la contraseña de root?? (yes/no)")
+		opt = input("> ")
+		if (opt=="yes" or opt == "YES" or opt == "y"):
+			os.system("arch-chroot /mnt passwd root")
+		elif (opt == "no" or opt == "NO" or opt == "n"):
+			pass
+		else:
+			configuracion_basica()
 
 
 	os.system("loadkeys es") # Carga el teclado en Español
@@ -58,6 +71,7 @@ def instalar_sistema_base():
 		print("Instalacion estandar")
 		particionado_estandar()
 		instalar_sistema_y_efi()
+		configuracion_basica()
 	elif (opt == "2"):
 		print("Instalacion estandar cifrado")
 
