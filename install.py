@@ -39,7 +39,7 @@ def instalar_sistema_base():
 		os.system("genfstab -U /mnt >> /mnt/etc/fstab")
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
-
+		os.system("grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
 		os.system("clear")
 		print("Desea activar la contraseña de root?? (yes/no)")
@@ -58,7 +58,8 @@ def instalar_sistema_base():
 	os.system("pacman -Sy")
 	os.system("clear")
 	print("Porfavor indique el hostname del equipo:")
-	hostname = input(">")
+	hostname = input("> ")
+	os.system("clear")
 
 	print("""Porfavor seleccione el modo de particionado del disco:
 		1.- Estandar (Todo en una partición sin cifrar)
