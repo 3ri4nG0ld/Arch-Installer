@@ -39,7 +39,7 @@ def instalar_sistema_base():
 		os.system("genfstab -U /mnt >> /mnt/etc/fstab")
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
-		os.system("grub-mkconfig -o /boot/grub/grub.cfg")
+		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
 		os.system("clear")
 		print("Desea activar la contraseña de root?? (yes/no)")
