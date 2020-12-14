@@ -31,6 +31,7 @@ def instalar_sistema_base():
 	def particionado_cifrado():
 		pass
 	def particionado_lvm_cifrado(hostname):
+		pass
 	#--------------------------------------------#
 	#----- Funciones de instalación -------------#
 	def instalar_sistema_y_efi():
