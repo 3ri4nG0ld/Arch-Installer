@@ -46,10 +46,15 @@ def instalar_sistema_base():
 		disk = input("> ")
 		os.system(f"parted -s {disk} mklabel gpt") # Crea tabla de particiones GPT
 		os.system(f"parted -s {disk} mkpart efi fat32 0 512") # Crea una particion llamada efi de 512M
+		os.system(f"parted -s {disk} mkpart boot fat32 0 512")
 		os.system(f"parted -s {disk} mkpart system ext4 512 100%") # Crea una partición llamada system con el resto del almacenamiento
+
+
+
 		os.system("clear")
 		print("Indicar particiones manualmente?(y/N)")
 		print("* Opcional")
+
 		opt=input("> ")
 		if((opt =="y") or (opt == "Y")):
 			part_efi=input("Particion EFI: ")
@@ -59,21 +64,74 @@ def instalar_sistema_base():
 				print("Se utilizara disco externo")
 		elif ((opt == "") or (opt == "N") or (opt == "n")):
 			part_efi=disk+"1"
-			part_system=disk+"2"
+			part_boot=disk+"2"
+			part_system=disk+"3"
+
+
+
+
 		os.system("clear")
 		print("A continuacion se solizitara la contraseña de cifrado del disco:")
+		#Encripta la particion principal
 		os.system("cryptsetup luksFormat --type luks2 "+ part_system)
 		os.system("cryptsetup open " + part_system + " enc")
+
+		#Crea el volumen logico
 		os.system("pvcreate --dataalignment 1m /dev/mapper/enc")
 		os.system("vgcreate vol /dev/mapper/enc")
 		os.system("lvcreate -l +100%FREE vol -n root")
-		os.system("mkfs.ext4 /dev/mapper/vol-root")
+		
 
-		os.system("mount /dev/mapper/vol-root /mnt")
-
+		#Formatear particiones
 		os.system("mkfs.fat -F32 " + part_efi)
-		os.system("mkdir -p /mnt/boot/efi")
-		os.system("mount " + part_efi + " /mnt/boot/efi")
+		os.system("mkfs.ext4 " + part_boot)
+		os.system("mkfs.ext4 /dev/mapper/vol-root")
+		
+
+
+		#montar particiones
+		os.system("mount /dev/mapper/vol-root /mnt")
+		os.system("mkdir /mnt/boot/")
+		os.system("mount " + part_boot + " /mnt/boot")
+
+		#Generar fstab
+		os.system("genfstab -U -p /mnt >> /mnt/etc/fstab")
+
+		#Instalar sistema base
+		os.system("pacstrap /mnt base linux lvm2")
+
+		#Edita el archivo /etc/mkinitcpio.conf
+		file=open("/mnt/etc/mkinitcpio.conf","r")
+		text=file.read()
+		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)")
+		file.close()
+		file=open("/mnt/etc/mkinitcpio.conf","w")
+		file.write(text)
+		file.close()
+		# Aplica la configuracion
+		os.system("arch-chroot /mnt mkinitcpio -p linux")
+
+		# Instala el Grub
+		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
+		# Edita el archivo /etc/default/grub
+		file=open("/mnt/etc/default/grub","r")
+		text=file.read()
+		text=text.replace('GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"','GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=' + part_system + ':vol:allow-discards quiet"')
+		text=text.replace('#GRUB_ENABLE_CRYPTODISK=y','GRUB_ENABLE_CRYPTODISK=y')
+		file.close()
+		file=open("/mnt/etc/default/grub","w")
+		file.write(text)
+		file.close()
+
+		#Montar EFI
+		os.system("mkdir /mnt/boot/EFI")
+		os.system("mount " + part_efi + " /mnt/boot/EFI")
+
+		#Instalar y aplicar configuración grub
+		os.system("arch-chroot /mnt grub-install --efi-directory=/boot/efi --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
+		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
+
+		
 		return part_system
 	#--------------------------------------------#
 	#----- Funciones de instalación -------------#
@@ -146,7 +204,7 @@ def instalar_sistema_base():
 	elif (opt == "2"):
 		print("Instalacion estandar cifrado")
 		part_system=particionado_lvm_cifrado(hostname)
-		instalar_sistema_y_efi_lvm_cifrado(part_system)
+		#instalar_sistema_y_efi_lvm_cifrado(part_system)
 		configuracion_basica()
 
 instalar_sistema_base()
