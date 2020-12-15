@@ -73,8 +73,9 @@ def instalar_sistema_base():
 
 		os.system("mkfs.fat " + part_efi)
 		os.system("mkdir /mnt/boot")
-		os.system("mkdir /mnt/boot/efi")
-		os.system("mount " + part_efi + " /mnt/boot/efi")
+		#os.system("mkdir /mnt/boot/efi")
+		#os.system("mount " + part_efi + " /mnt/boot/efi")
+		os.system("mount " + part_efi + " /mnt/boot/")
 		return part_system
 	#--------------------------------------------#
 	#----- Funciones de instalación -------------#
@@ -87,7 +88,7 @@ def instalar_sistema_base():
 	def instalar_sistema_y_efi_lvm_cifrado(part_system):
 		os.system("pacstrap /mnt base linux linux-firmware lvm2")
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
-		
+
 		os.system("genfstab /mnt >> /mnt/etc/fstab")
 
 		file=open("/mnt/etc/mkinitcpio.conf","r")
