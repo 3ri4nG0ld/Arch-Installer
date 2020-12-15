@@ -128,7 +128,7 @@ def instalar_sistema_base():
 		os.system("mount " + part_efi + " /mnt/boot/EFI")
 
 		#Instalar y aplicar configuración grub
-		os.system("arch-chroot /mnt grub-install --efi-directory=/boot/efi --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
+		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 
 		
