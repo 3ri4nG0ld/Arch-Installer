@@ -158,12 +158,13 @@ def instalar_sistema_base():
 		if (opt=="yes" or opt == "YES" or opt == "y"):
 			os.system("arch-chroot /mnt passwd root")
 		elif (opt == "no" or opt == "NO" or opt == "n"):
+			pass
 			print("Desea añadir otro usuario?? (yes/no)")
 			opt = input("> ")
 			if (opt=="yes" or opt == "YES" or opt == "y"):
 				pass
 			elif (opt == "no" or opt == "NO" or opt == "n"):
-
+				pass
 		else:
 			configuracion_basica()
 
