@@ -90,7 +90,7 @@ def instalar_sistema_base():
 
 		file=open("/mnt/etc/mkinitcpio.conf","r")
 		text=file.read()
-		text=text.replace("modconf block filesystems keyboard fsck","modconf block keymap encrypt lvm2 filesystems keyboard fsck")
+		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect modconf block keymap encrypt lvm2 filesystems keyboard fsck)")
 		file.close()
 		file=open("/mnt/etc/mkinitcpio.conf","w")
 		file.write(text)
