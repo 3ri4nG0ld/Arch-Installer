@@ -71,10 +71,21 @@ def instalar_sistema_base():
 
 
 		os.system("clear")
-		print("A continuacion se solizitara la contraseña de cifrado del disco:")
+		
+		while True:
+			print("Por favor introduce la contraseña de cifrado: ")
+			passwd = getpass("Password: ")
+			passwd2 = getpass("Repeat Password: ")
+			if (passwd == passwd2):
+				print("Acceso permitido")
+				break
+			else:
+		os.system("clear")
+		print("Las contraseñas no coinciden")
+
 		#Encripta la particion principal
-		os.system("cryptsetup luksFormat --type luks2 "+ part_system)
-		os.system("cryptsetup open " + part_system + " enc")
+		os.system("echo " + passwd + " | cryptsetup luksFormat --type luks2 "+ part_system + " -d -")
+		os.system("echo " + passwd + " | cryptsetup open " + part_system + " enc -d -")
 
 		#Crea el volumen logico
 		os.system("pvcreate --dataalignment 1m /dev/mapper/enc")
@@ -141,33 +152,6 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
-	def instalar_sistema_y_efi_lvm_cifrado(part_system):
-		os.system("pacstrap /mnt base linux linux-firmware lvm2")
-		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
-
-		os.system("genfstab -U -p /mnt >> /mnt/etc/fstab")
-
-		file=open("/mnt/etc/mkinitcpio.conf","r")
-		text=file.read()
-		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)")
-		file.close()
-		file=open("/mnt/etc/mkinitcpio.conf","w")
-		file.write(text)
-		os.system("arch-chroot /mnt mkinitcpio -p linux")
-
-		
-
-		file=open("/mnt/etc/default/grub","r")
-		text=file.read()
-		text=text.replace('GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"','GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=' + part_system + ':vol:allow-discards quiet"')
-		text=text.replace('#GRUB_ENABLE_CRYPTODISK=y','GRUB_ENABLE_CRYPTODISK=y')
-		file.close()
-		file=open("/mnt/etc/default/grub","w")
-		file.write(text)
-
-
-		os.system("arch-chroot /mnt grub-install --efi-directory=/boot/efi --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
-		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
 		os.system("clear")
 		print("Desea activar la contraseña de root?? (yes/no)")
@@ -175,7 +159,12 @@ def instalar_sistema_base():
 		if (opt=="yes" or opt == "YES" or opt == "y"):
 			os.system("arch-chroot /mnt passwd root")
 		elif (opt == "no" or opt == "NO" or opt == "n"):
-			pass
+			print("Desea añadir otro usuario?? (yes/no)")
+			opt = input("> ")
+			if (opt=="yes" or opt == "YES" or opt == "y"):
+				pass
+			elif (opt == "no" or opt == "NO" or opt == "n"):
+
 		else:
 			configuracion_basica()
 
