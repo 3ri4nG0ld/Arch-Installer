@@ -87,11 +87,11 @@ def instalar_sistema_base():
 		os.system("pacstrap /mnt base linux linux-firmware lvm2")
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
 
-		os.system("genfstab -pU /mnt >> /mnt/etc/fstab")
+		os.system("genfstab -U -p /mnt >> /mnt/etc/fstab")
 
 		file=open("/mnt/etc/mkinitcpio.conf","r")
 		text=file.read()
-		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt lvm2 filesystems fsck)")
+		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)")
 		file.close()
 		file=open("/mnt/etc/mkinitcpio.conf","w")
 		file.write(text)
@@ -102,6 +102,7 @@ def instalar_sistema_base():
 		file=open("/mnt/etc/default/grub","r")
 		text=file.read()
 		text=text.replace('GRUB_CMDLINE_LINUX=""','GRUB_CMDLINE_LINUX="cryptdevice=' + part_system + ':enc"')
+		text=text.replace('#GRUB_ENABLE_CRYPTODISK=y','GRUB_ENABLE_CRYPTODISK=y')
 		file.close()
 		file=open("/mnt/etc/default/grub","w")
 		file.write(text)
