@@ -71,11 +71,9 @@ def instalar_sistema_base():
 
 		os.system("mount /dev/mapper/vol-root /mnt")
 
-		os.system("mkfs.fat " + part_efi)
-		os.system("mkdir /mnt/boot")
-		#os.system("mkdir /mnt/boot/efi")
-		#os.system("mount " + part_efi + " /mnt/boot/efi")
-		os.system("mount " + part_efi + " /mnt/boot/")
+		os.system("mkfs.fat -F32 " + part_efi)
+		os.system("mkdir -p /mnt/boot/efi")
+		os.system("mount " + part_efi + " /mnt/boot/efi")
 		return part_system
 	#--------------------------------------------#
 	#----- Funciones de instalación -------------#
@@ -89,11 +87,11 @@ def instalar_sistema_base():
 		os.system("pacstrap /mnt base linux linux-firmware lvm2")
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
 
-		os.system("genfstab /mnt >> /mnt/etc/fstab")
+		os.system("genfstab -pU /mnt >> /mnt/etc/fstab")
 
 		file=open("/mnt/etc/mkinitcpio.conf","r")
 		text=file.read()
-		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect modconf block keymap encrypt lvm2 filesystems keyboard fsck)")
+		text=text.replace("HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)","HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt lvm2 filesystems fsck)")
 		file.close()
 		file=open("/mnt/etc/mkinitcpio.conf","w")
 		file.write(text)
@@ -109,7 +107,7 @@ def instalar_sistema_base():
 		file.write(text)
 
 
-		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
+		os.system("arch-chroot /mnt grub-install --efi-directory=/boot/efi --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
 		os.system("clear")
@@ -151,3 +149,4 @@ def instalar_sistema_base():
 		configuracion_basica()
 
 instalar_sistema_base()
+os.system("umount -R /mnt")
