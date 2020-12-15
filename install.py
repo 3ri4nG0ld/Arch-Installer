@@ -2,7 +2,6 @@
 
 import os
 from getpass import getpass
-import time
 
 
 
@@ -80,8 +79,8 @@ def instalar_sistema_base():
 				print("Acceso permitido")
 				break
 			else:
-		os.system("clear")
-		print("Las contraseñas no coinciden")
+				os.system("clear")
+				print("Las contraseñas no coinciden")
 
 		#Encripta la particion principal
 		os.system("echo " + passwd + " | cryptsetup luksFormat --type luks2 "+ part_system + " -d -")
