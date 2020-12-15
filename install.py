@@ -62,7 +62,7 @@ def instalar_sistema_base():
 			part_system=disk+"2"
 		os.system("clear")
 		print("A continuacion se solizitara la contraseña de cifrado del disco:")
-		call("cryptsetup luksFormat --type luks2 "+ part_system)
+		subprocess.call("cryptsetup luksFormat --type luks2 "+ part_system,shell=True)
 		print(part_system)
 		input("Enter para continuar...")
 		os.system("cryptsetup open " + part_system + " enc")
