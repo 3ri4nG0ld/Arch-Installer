@@ -149,4 +149,4 @@ def instalar_sistema_base():
 		configuracion_basica()
 
 instalar_sistema_base()
-os.system("umount -R /mnt")
+#os.system("umount -R /mnt")
