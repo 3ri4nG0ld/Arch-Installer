@@ -86,6 +86,8 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def instalar_sistema_y_efi_lvm_cifrado(part_system):
 		os.system("pacstrap /mnt base linux linux-firmware lvm2")
+		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
+		
 		os.system("genfstab /mnt >> /mnt/etc/fstab")
 
 		file=open("/mnt/etc/mkinitcpio.conf","r")
@@ -96,7 +98,7 @@ def instalar_sistema_base():
 		file.write(text)
 		os.system("arch-chroot /mnt mkinitcpio -p linux")
 
-		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
+		
 
 		file=open("/mnt/etc/default/grub","r")
 		text=file.read()
