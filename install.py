@@ -143,7 +143,7 @@ def instalar_sistema_base():
 		configuracion_basica()
 	elif (opt == "2"):
 		print("Instalacion estandar cifrado")
-		particionado_lvm_cifrado()
+		particionado_lvm_cifrado(hostname)
 		instalar_sistema_y_efi_lvm_cifrado()
 		configuracion_basica()
 
