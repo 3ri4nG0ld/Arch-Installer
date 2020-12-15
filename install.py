@@ -82,8 +82,8 @@ def instalar_sistema_base():
 				print("Las contraseñas no coinciden")
 
 		#Encripta la particion principal
-		os.system("echo " + passwd + " | cryptsetup luksFormat --type luks2 "+ part_system + " -d -")
-		os.system("echo " + passwd + " | cryptsetup open " + part_system + " enc -d -")
+		os.system("echo -n " + passwd + " | cryptsetup luksFormat --type luks2 "+ part_system + " -d -")
+		os.system("echo -n " + passwd + " | cryptsetup open " + part_system + " enc -d -")
 
 		#Crea el volumen logico
 		os.system("pvcreate --dataalignment 1m /dev/mapper/enc")
