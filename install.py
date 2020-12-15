@@ -63,9 +63,9 @@ def instalar_sistema_base():
 			part_system=disk+"2"
 		os.system("clear")
 		print("A continuacion se solizitara la contraseña de cifrado del disco:")
-		os.system(f"cryptsetup luksFormat --type luks2 {part_system}")
+		os.system("cryptsetup luksFormat --type luks2 "+ part_system)
 		print(part_system)
-		os.system(f"cryptsetup open {part_system} enc")
+		os.system("cryptsetup open " + {part_system} + " enc")
 		os.system("pvcreate /dev/mapper/enc")
 		os.system("vgcreate vol /dev/mapper/enc")
 		os.system("lvcreate -l +100%FREE vol -n root")
