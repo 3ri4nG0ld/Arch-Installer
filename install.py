@@ -46,8 +46,8 @@ def instalar_sistema_base():
 		disk = input("> ")
 		os.system(f"parted -s {disk} mklabel gpt") # Crea tabla de particiones GPT
 		os.system(f"parted -s {disk} mkpart efi fat32 0 512") # Crea una particion llamada efi de 512M
-		os.system(f"parted -s {disk} mkpart boot fat32 0 512")
-		os.system(f"parted -s {disk} mkpart system ext4 512 100%") # Crea una partición llamada system con el resto del almacenamiento
+		os.system(f"parted -s {disk} mkpart boot fat32 512 1024")
+		os.system(f"parted -s {disk} mkpart system ext4 1024 100%") # Crea una partición llamada system con el resto del almacenamiento
 
 
 
