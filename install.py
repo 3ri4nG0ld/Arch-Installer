@@ -101,7 +101,7 @@ def instalar_sistema_base():
 
 		file=open("/mnt/etc/default/grub","r")
 		text=file.read()
-		text=text.replace('GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"','GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=' + part_system + ':allow-discards quiet"')
+		text=text.replace('GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"','GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 cryptdevice=' + part_system + ':vol:allow-discards quiet"')
 		text=text.replace('#GRUB_ENABLE_CRYPTODISK=y','GRUB_ENABLE_CRYPTODISK=y')
 		file.close()
 		file=open("/mnt/etc/default/grub","w")
