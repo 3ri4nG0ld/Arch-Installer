@@ -75,6 +75,7 @@ def instalar_sistema_base():
 		os.system("mkdir /mnt/boot")
 		os.system("mkdir /mnt/boot/efi")
 		os.system("mount " + part_efi + " /mnt/boot/efi")
+		return part_system
 	#--------------------------------------------#
 	#----- Funciones de instalación -------------#
 	def instalar_sistema_y_efi():
@@ -83,7 +84,7 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt pacman --noconfirm -S grub efibootmgr")
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
-	def instalar_sistema_y_efi_lvm_cifrado():
+	def instalar_sistema_y_efi_lvm_cifrado(part_system):
 		os.system("pacstrap /mnt base linux linux-firmware")
 		os.system("genfstab /mnt >> /mnt/etc/fstab")
 
@@ -142,8 +143,8 @@ def instalar_sistema_base():
 		configuracion_basica()
 	elif (opt == "2"):
 		print("Instalacion estandar cifrado")
-		particionado_lvm_cifrado(hostname)
-		instalar_sistema_y_efi_lvm_cifrado()
+		part_system=particionado_lvm_cifrado(hostname)
+		instalar_sistema_y_efi_lvm_cifrado(part_system)
 		configuracion_basica()
 
 instalar_sistema_base()
