@@ -70,13 +70,12 @@ def instalar_sistema_base():
 
 
 		os.system("clear")
-		
+		# Solicita la password para cifrar la particion principal
 		while True:
 			print("Por favor introduce la contraseña de cifrado: ")
 			passwd = getpass("Password: ")
 			passwd2 = getpass("Repeat Password: ")
 			if (passwd == passwd2):
-				print("Acceso permitido")
 				break
 			else:
 				os.system("clear")
