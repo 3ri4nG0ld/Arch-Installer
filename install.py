@@ -106,7 +106,7 @@ def instalar_sistema_base():
 		file.write(text)
 
 
-		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
+		os.system("arch-chroot /mnt grub-install /dev/sda --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
 		os.system("clear")
