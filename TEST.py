@@ -1,1 +1,18 @@
-print("Porfavor realize 2 particiones gpt:\n\n- Partición 1 - 512MB - EFI System\n- Partición 2 - [Tamaño maximo] - Linux filesystem\n\n* Puedes investigar como realizar particiones en cfdisk")
+from getpass import getpass
+import sys,os
+
+while True:
+	passwd = getpass("Password: ")
+	passwd2 = getpass("Repeat Password: ")
+	if (passwd == passwd2):
+		print("Acceso permitido")
+		break
+	else:
+		os.system("clear")
+		print("Las contraseñas no coinciden")
+
+
+parted -s {device} mklabel gpt
+parted -s {device} mkpart efi 0 512
+parted -s {device} mkpart system 512 100%
+

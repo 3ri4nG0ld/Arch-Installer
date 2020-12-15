@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from getpass import getpass
 
 
 
@@ -11,25 +12,35 @@ def instalar_sistema_base():
 
 	#----- Funciones para el particionado -------#
 	def particionado_estandar():
+		#--------------------------------------#
+		# Esta funcion sirve para crear el particionado del disco sin cifrar
 		os.system("lsblk -p")
 		print("Indique el disco donde quiere realizar el particionado:")
 		disk = input("> ")
+		os.system(f"parted -s {disk} mklabel gpt") # Crea tabla de particiones GPT
+		os.system(f"parted -s {disk} mkpart efi fat32 0 512") # Crea una particion llamada efi de 512M
+		os.system(f"parted -s {disk} mkpart system ext4 512 100%") # Crea una partición llamada system con el resto del almacenamiento
 		os.system("clear")
-		print("Porfavor realize 2 particiones gpt:\n\n- Partición 1 - 512MB - EFI System\n- Partición 2 - [Tamaño maximo] - Linux filesystem\n\n* Puedes investigar como realizar particiones en cfdisk")		
-		input("Pulse enter para continuar...")
-		os.system("cfdisk " + disk)
-		print("Porfavor indique la particion 1 - EFI System")
-		part_efi = input("> ")
-		print("Porfavor indique la particion 2 - Linux filesystem")
-		part_system = input("> ")
+		print("Indicar particiones manualmente?(y/N)")
+		print("* Opcional")
+		opt=input("> ")
+		if((opt =="y") or (opt == "Y")):
+			part_efi=input("Particion EFI: ")
+			part_system=input("Particion System: ")
+			part_home=input("* Particion Home: ")
+			if(part_home):
+				print("Se utilizara disco externo")
+		elif ((opt == "") or (opt == "N") or (opt == "n")):
+			part_efi=disk+"1"
+			part_system=disk+"2"
+
+
 		os.system("mkfs.ext4 " + part_system)
 		os.system("mkfs.fat " + part_efi)
 		os.system("mount " + part_system + " /mnt")
 		os.system("mkdir /mnt/boot")
 		os.system("mkdir /mnt/boot/efi")
 		os.system("mount " + part_efi + " /mnt/boot/efi")
-	def particionado_cifrado():
-		pass
 	def particionado_lvm_cifrado(hostname):
 		pass
 	#--------------------------------------------#
@@ -63,10 +74,9 @@ def instalar_sistema_base():
 
 	print("""Porfavor seleccione el modo de particionado del disco:
 		1.- Estandar (Todo en una partición sin cifrar)
-		2.- Estandar cifrado (Todo en una partición cifrada)
-		3.- LVM Cifrado (Crea una particion cifrada y dentro unidades logicas LVM)
+		2.- LVM Cifrado (Crea una particion cifrada y dentro unidades logicas LVM)
 
-		4.- Estandar + separar particion home (Separa la carpeta de los usuarios a otro disco)""")
+		3.- Estandar + separar particion home (Separa la carpeta de los usuarios a otro disco)""")
 	opt=input("> ")
 
 	if (opt == "1"):
