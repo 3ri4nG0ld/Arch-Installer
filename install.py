@@ -151,6 +151,9 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
+		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils")
+		os.system("arch-chroot /mnt systemctl enable NetworkManager")
+		
 		os.system("arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime")
 		os.system("arch-chroot /mnt hwclock --systohc")
 
@@ -170,11 +173,34 @@ def instalar_sistema_base():
 		# Editar distribucion del teclado
 		os.system("echo 'KEYMAP=es' > /mnt/etc/vconsole.conf")
 		
+		# Se aplica el hostname
+		print("Porfavor indique el hostname del equipo:")
+		hostname = input("> ")
+		os.system(f"echo {hostname} > /mnt/etc/hostname")
+		os.system(f"echo '127.0.0.1	localhost\n::1	localhost\n127.0.0.1	{hostname}'> /etc/hosts")
 
 
 
-		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager")
-		os.system("arch-chroot /mnt systemctl enable NetworkManager")
+		
+
+
+
+		# Crea grupo sudo
+		os.system("arch-chroot /mnt groupadd sudo")
+
+		#edita el archivo sudoers para que el grupo sudo tenga todos los permisos
+		file=open("/mnt/etc/sudoers","r")
+		text=file.read()
+		text=text.replace('# %sudo ALL=(ALL) ALL','%sudo ALL=(ALL) ALL')
+		file.close()
+		file=open("/mnt/etc/sudoers","w")
+		file.write(text)
+		file.close()
+
+
+
+
+
 		os.system("clear")
 		while True:
 			print("Desea activar la contraseña de root?? (y/N)")
@@ -192,21 +218,31 @@ def instalar_sistema_base():
 			print("* Con permisos de sudo")
 			opt = input("> ")
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
-				os.system("arch-chroot /mnt passwd root")
+				username = input("Usuario: ")
+				while True:
+					print("Por favor introduce la contraseña de cifrado: ")
+					passwd = getpass("Password: ")
+					passwd2 = getpass("Repeat Password: ")
+					if (passwd == passwd2):
+						break
+					else:
+						os.system("clear")
+						print("Las contraseñas no coinciden")
+
+				os.system(f"arch-chroot /mnt useradd -M {username} -G sudo -p {passwd}")
+				os.system(f"ecryptfs-migrate-home -u {username}")
 				break
 			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
 				break
 			else:
 				pass
 
+		os.system("arch-chroot /mnt pacman --noconfirm -S htop screenfetch neofetch zsh")
 
 	os.system("loadkeys es") # Carga el teclado en Español
 	# if ls /sys/firmware/efi/efivars == true --> Modo UEFI --> else =  Modo BIOS
 	os.system("timedatectl set-ntp true") # Sincroniza hora del reloj
 	os.system("pacman -Sy")
-	os.system("clear")
-	print("Porfavor indique el hostname del equipo:")
-	hostname = input("> ")
 	os.system("clear")
 
 	print("""Porfavor seleccione el modo de particionado del disco:
