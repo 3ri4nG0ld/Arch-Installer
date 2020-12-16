@@ -153,7 +153,7 @@ def instalar_sistema_base():
 	def configuracion_basica():
 		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils")
 		os.system("arch-chroot /mnt systemctl enable NetworkManager")
-		
+
 		os.system("arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime")
 		os.system("arch-chroot /mnt hwclock --systohc")
 
@@ -174,6 +174,7 @@ def instalar_sistema_base():
 		os.system("echo 'KEYMAP=es' > /mnt/etc/vconsole.conf")
 		
 		# Se aplica el hostname
+		os.system("clear")
 		print("Porfavor indique el hostname del equipo:")
 		hostname = input("> ")
 		os.system(f"echo {hostname} > /mnt/etc/hostname")
@@ -220,7 +221,7 @@ def instalar_sistema_base():
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
 				username = input("Usuario: ")
 				while True:
-					print("Por favor introduce la contraseña de cifrado: ")
+					print("Por favor introduce la contraseña del usuario: ")
 					passwd = getpass("Password: ")
 					passwd2 = getpass("Repeat Password: ")
 					if (passwd == passwd2):
@@ -229,7 +230,7 @@ def instalar_sistema_base():
 						os.system("clear")
 						print("Las contraseñas no coinciden")
 
-				os.system(f"arch-chroot /mnt useradd -M {username} -G sudo -p {passwd}")
+				os.system(f"arch-chroot /mnt useradd {username} -G sudo -p {passwd}")
 				os.system(f"ecryptfs-migrate-home -u {username}")
 				break
 			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
