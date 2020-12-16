@@ -152,7 +152,7 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
-		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils")
+		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils rsync")
 		os.system("arch-chroot /mnt systemctl enable NetworkManager")
 
 		os.system("arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime")
@@ -214,7 +214,7 @@ def instalar_sistema_base():
 				break
 			else:
 				pass
-
+		os.system("clear")
 		while True:
 			print("Desea Crear un usuario principal?? (Y/n)")
 			print("* Con permisos de sudo")
