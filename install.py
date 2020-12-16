@@ -233,6 +233,7 @@ def instalar_sistema_base():
 						print("Las contraseñas no coinciden")
 
 				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo -p {passwd}")
+				os.system("arch-chroot /mnt modprobe ecryptfs")
 				os.system(f"arch-chroot /mnt ecryptfs-migrate-home -u {username}")
 				break
 			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
