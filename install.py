@@ -232,7 +232,8 @@ def instalar_sistema_base():
 						os.system("clear")
 						print("Las contraseñas no coinciden")
 
-				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo -p {passwd}")
+				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo")
+				os.system("arch-chroot /mnt passwd brian")
 				os.system("modprobe ecryptfs")
 				os.system(f"arch-chroot /mnt ecryptfs-migrate-home -u {username}")
 				break
