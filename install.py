@@ -152,7 +152,7 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
-		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils rsync")
+		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils")
 		os.system("arch-chroot /mnt systemctl enable NetworkManager")
 
 		os.system("arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime")
@@ -214,6 +214,7 @@ def instalar_sistema_base():
 				break
 			else:
 				pass
+		#os.system("arch-chroot /mnt pacman --noconfirm -S")
 		os.system("clear")
 		while True:
 			print("Desea Crear un usuario principal?? (Y/n)")
@@ -231,7 +232,7 @@ def instalar_sistema_base():
 						os.system("clear")
 						print("Las contraseñas no coinciden")
 
-				os.system(f"arch-chroot /mnt useradd -M {username} -G sudo -p {passwd}")
+				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo -p {passwd}")
 				os.system(f"arch-chroot /mnt ecryptfs-migrate-home -u {username}")
 				break
 			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
