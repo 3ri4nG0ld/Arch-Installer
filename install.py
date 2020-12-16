@@ -151,21 +151,53 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
+		os.system("arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime")
+		os.system("arch-chroot /mnt hwclock --systohc")
+
+
+		# Edita el idioma del sistema a español
+		file=open("/mnt/etc/locale.gen","r")
+		text=file.read()
+		text=text.replace('#es_ES.UTF-8 UTF-8','es_ES.UTF-8 UTF-8')
+		file.close()
+		file=open("/mnt/etc/locale.gen","w")
+		file.write(text)
+		file.close()
+
+		# Aplica la configuracion de idioma
+		os.system("arch-chroot /mnt locale-gen")
+
+		# Editar distribucion del teclado
+		os.system("echo 'KEYMAP=es' > /mnt/etc/vconsole.conf")
+		
+
+
+
+		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager")
+		os.system("arch-chroot /mnt systemctl enable NetworkManager")
 		os.system("clear")
-		print("Desea activar la contraseña de root?? (yes/no)")
-		opt = input("> ")
-		if (opt=="yes" or opt == "YES" or opt == "y"):
-			os.system("arch-chroot /mnt passwd root")
-		elif (opt == "no" or opt == "NO" or opt == "n"):
-			pass
-			print("Desea añadir otro usuario?? (yes/no)")
+		while True:
+			print("Desea activar la contraseña de root?? (y/N)")
 			opt = input("> ")
-			if (opt=="yes" or opt == "YES" or opt == "y"):
+			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("arch-chroot /mnt passwd root")
+				break
+			elif ((opt == "") or (opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+				break
+			else:
 				pass
-			elif (opt == "no" or opt == "NO" or opt == "n"):
+
+		while True:
+			print("Desea Crear un usuario principal?? (Y/n)")
+			print("* Con permisos de sudo")
+			opt = input("> ")
+			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("arch-chroot /mnt passwd root")
+				break
+			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
+				break
+			else:
 				pass
-		else:
-			configuracion_basica()
 
 
 	os.system("loadkeys es") # Carga el teclado en Español
