@@ -39,7 +39,7 @@ def instalar_sistema_base():
 		os.system("mkdir /mnt/boot")
 		os.system("mkdir /mnt/boot/efi")
 		os.system("mount " + part_efi + " /mnt/boot/efi")
-	def particionado_lvm_cifrado(hostname):
+	def particionado_lvm_cifrado():
 		os.system("lsblk -p")
 		print("Indique el disco donde quiere realizar el particionado:")
 		disk = input("> ")
@@ -57,6 +57,7 @@ def instalar_sistema_base():
 		opt=input("> ")
 		if((opt =="y") or (opt == "Y")):
 			part_efi=input("Particion EFI: ")
+			part_boot=input("Particion Boot: ")
 			part_system=input("Particion System: ")
 			part_home=input("* Particion Home: ")
 			if(part_home):
@@ -260,7 +261,7 @@ def instalar_sistema_base():
 		configuracion_basica()
 	elif (opt == "2"):
 		print("Instalacion estandar cifrado")
-		part_system=particionado_lvm_cifrado(hostname)
+		particionado_lvm_cifrado()
 		#instalar_sistema_y_efi_lvm_cifrado(part_system)
 		configuracion_basica()
 
