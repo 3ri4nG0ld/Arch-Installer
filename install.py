@@ -214,7 +214,7 @@ def instalar_sistema_base():
 				break
 			else:
 				pass
-		#os.system("arch-chroot /mnt pacman --noconfirm -S")
+		os.system("arch-chroot /mnt pacman --noconfirm -S rsync lsof which")
 		os.system("clear")
 		while True:
 			print("Desea Crear un usuario principal?? (Y/n)")
