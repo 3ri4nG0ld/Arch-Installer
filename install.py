@@ -225,7 +225,7 @@ def instalar_sistema_base():
 
 		# Instalar configuracion fzf
 		os.system("sudo mkdir /mnt/etc/fzf")
-		os.system("sudo cp configs/fzf.zsh /etc/fzf/fzf.zsh")
+		os.system("sudo cp configs/fzf.zsh /mnt/etc/fzf/fzf.zsh")
 		os.system("sudo chmod 555 /mnt/etc/fzf/fzf.zsh")
 
 

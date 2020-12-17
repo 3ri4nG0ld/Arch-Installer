@@ -159,7 +159,7 @@ function man() {
 
 [ -f /etc/fzf/fzf.zsh ] && source /etc/fzf/fzf.zsh
 
-new_line_before_prompt=no
+new_line_before_prompt=yes
 precmd() {
     # Print the previously configured title
     print -Pnr -- "$TERM_TITLE"
