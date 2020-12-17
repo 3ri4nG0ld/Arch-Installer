@@ -210,7 +210,8 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt pacman --noconfirm -S rsync lsof which")
 		os.system("clear")
 
-		os.system("arch-chroot /mnt pacman --noconfirm -S zsh")
+		os.system("arch-chroot /mnt pacman --noconfirm -S zsh zsh-syntax-highlighting")
+		os.system("arch-chroot /mnt cd /usr/share && wget https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting/master/zsh-syntax-highlighting.zsh")
 		# Configurar zsh como shell por defecto 
 		os.system("cp configs/useradd /mnt/etc/default/useradd")
 
@@ -245,6 +246,30 @@ def instalar_sistema_base():
 				pass
 
 		os.system("clear")
+
+		while True:
+			print("Desea Instalar un Escritorio?? (y/n)")
+			print("* Con permisos de sudo")
+			opt = input("> ")
+			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("clear")
+				print("Que escritorio quieres instalar??")
+				print("1.- BSPWM 2.- XFCE4")
+				opt = input("> ")
+				if (opt == "1"):
+					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
+				elif (opt == "2"):
+					print("Instalar XFCE4") # introducir qui codigo instalacion XFCE4
+				print("quieres instalar otro escritorio??(y/N)")
+				opt = input("> ")
+				if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+					pass
+				elif ((opt == "") or (opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+					break
+			elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+				break
+			else:
+				pass
 
 
 
