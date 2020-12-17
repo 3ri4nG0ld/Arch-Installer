@@ -75,7 +75,7 @@ if [ -n "$force_color_prompt" ]; then
 	color_prompt=
     fi
 fi
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 if [ "$color_prompt" = yes ]; then
     PROMPT=$'%F{%(#.blue.green)}┌──${debian_chroot:+($debian_chroot)──}(%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.green)})-[%B%F{reset}%(6~.%-1~/…/%4~.%5~)%b%F{%(#.blue.green)}]\n└─%B%(#.%F{red}#.%F{blue}$)%b%F{reset} '
@@ -142,7 +142,7 @@ xterm*|rxvt*)
 esac
 
 
-# Set 'man' colors
+# Añade los colores al comando MAN
 function man() {
     env \
     LESS_TERMCAP_mb=$'\e[01;31m' \
@@ -155,9 +155,12 @@ function man() {
     man "$@"
 }
 
-
-
+#Añade FZF a zsh con sus accesos directos
 [ -f /etc/fzf/fzf.zsh ] && source /etc/fzf/fzf.zsh
+
+
+
+
 
 new_line_before_prompt=yes
 precmd() {
