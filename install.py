@@ -190,15 +190,8 @@ def instalar_sistema_base():
 		# Crea grupo sudo
 		os.system("arch-chroot /mnt groupadd sudo")
 
-		#edita el archivo sudoers para que el grupo sudo tenga todos los permisos
-		file=open("/mnt/etc/sudoers","r")
-		text=file.read()
-		text=text.replace('# %sudo ALL=(ALL) ALL','%sudo ALL=(ALL) ALL')
-		file.close()
-		file=open("/mnt/etc/sudoers","w")
-		file.write(text)
-		file.close()
-
+		#Añade permisos al grupo sudo
+		os.system("echo '%sudo ALL=(ALL) ALL' > /mnt/etc/sudoers.d/sudo")
 
 
 
@@ -221,21 +214,16 @@ def instalar_sistema_base():
 			print("* Con permisos de sudo")
 			opt = input("> ")
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("clear")
 				username = input("Usuario: ")
-				while True:
-					print("Por favor introduce la contraseña del usuario: ")
-					passwd = getpass("Password: ")
-					passwd2 = getpass("Repeat Password: ")
-					if (passwd == passwd2):
-						break
-					else:
-						os.system("clear")
-						print("Las contraseñas no coinciden")
-
 				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo")
 				os.system("arch-chroot /mnt passwd brian")
+				os.system("clear")
 				os.system("modprobe ecryptfs")
-				os.system(f"arch-chroot /mnt ecryptfs-migrate-home -u {username}")
+				os.system(f"arch-chroot /mnt ecryptfs-migrate-home -u {username}") # Cifra la carpeta del usuario principal
+				os.system(f"arch-chroot /mnt rm -rf /home/{username}.*")
+				os.system("rm -rf /mnt/etc/pam.d/system-auth")
+				os.system("cp configs/system-auth /mnt/etc/pam.d/system-auth")
 				break
 			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
 				break
