@@ -209,14 +209,20 @@ def instalar_sistema_base():
 				pass
 		os.system("arch-chroot /mnt pacman --noconfirm -S rsync lsof which")
 		os.system("clear")
-		os.system("pacman --noconfirm -S wget")
+		#os.system("pacman --noconfirm -S wget")
 
-		os.system("arch-chroot /mnt pacman --noconfirm -S zsh zsh-syntax-highlighting fzf bat lsd")
+		os.system("arch-chroot /mnt pacman --noconfirm -S zsh zsh-syntax-highlighting zsh-autosuggestions fzf bat lsd")
 		#os.system("arch-chroot /mnt mkdir /usr/share/zsh-syntax-highlighting")
 		#os.system("cd /mnt/usr/share/zsh-syntax-highlighting && wget https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting/master/zsh-syntax-highlighting.zsh")
-		
+			
+
+
+
+
 		# Configurar zsh como shell por defecto 
 		os.system("cp configs/useradd /mnt/etc/default/useradd")
+		os.system("cp configs/skel/.zshrc /mnt/root/.zshrc")# copia la configuracion para root
+		os.system("arch-chroot /mnt chsh -s /usr/bin/zsh")#Establezer zsh para root
 
 		# Instalar carpeta skel configurada
 		os.system("rm -rf /mnt/etc/skel")
@@ -240,9 +246,13 @@ def instalar_sistema_base():
 			opt = input("> ")
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
 				os.system("clear")
+				print("Introduce Tu nombre de usuario (* solo minusculas)")
 				username = input("Usuario: ")
+				os.system("clear")
+				print("Escribe Tu nombre completo")
+				full_name = input("Nombre Completo: ")
 				username=username.lower()
-				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo")
+				os.system(f"arch-chroot /mnt useradd -m {username} -c '{full_name}' -G sudo")
 				os.system("arch-chroot /mnt passwd brian")
 				os.system("clear")
 				os.system("modprobe ecryptfs")
