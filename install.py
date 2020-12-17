@@ -234,7 +234,7 @@ def instalar_sistema_base():
 				os.system("arch-chroot /mnt passwd brian")
 				os.system("clear")
 				os.system("modprobe ecryptfs")
-				os.system(f"arch-chroot /mnt ecryptfs-migrate-home -u {username}") # Cifra la carpeta del usuario principal
+				os.system(f"arch-chroot /mnt ecryptfs-migrate-home --nopwcheck -u {username}") # Cifra la carpeta del usuario principal
 				os.system(f"rm -rf /mnt/home/{username}.*")
 				os.system("rm -rf /mnt/etc/pam.d/system-auth")
 				os.system("cp configs/system-auth /mnt/etc/pam.d/system-auth")
