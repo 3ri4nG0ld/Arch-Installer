@@ -278,6 +278,21 @@ def instalar_sistema_base():
 				opt = input("> ")
 				if (opt == "1"):
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
+
+					#Instala las dependencias y el escritorio
+					os.system("arch-chroot /mnt pacman --noconfirm -S bspwm qterminal fonts-firacode git")
+
+					#instalar cuentes
+					os.system("sudo cp fonts/* /mnt/usr/local/share/fonts/")
+					os.system("sudo chmod 555 /mnt/usr/local/share/fonts/*")
+
+					#install 
+					os.system("arch-chroot /mnt git clone https://github.com/baskerville/bspwm.git")
+					os.system("arch-chroot /mnt git clone https://github.com/baskerville/sxhkd.git")
+					os.system("arch-chroot /mnt cd bspwm && make && sudo make install")
+					os.system("arch-chroot /mnt cd sxhkd && make && sudo make install")
+
+
 				elif (opt == "2"):
 					print("Instalar XFCE4") # introducir qui codigo instalacion XFCE4
 				print("quieres instalar otro escritorio??(y/N)")
@@ -306,9 +321,7 @@ def instalar_sistema_base():
 
 	print("""Porfavor seleccione el modo de particionado del disco:
 		1.- Estandar (Todo en una partición sin cifrar)
-		2.- LVM Cifrado (Crea una particion cifrada y dentro unidades logicas LVM)
-
-		3.- Estandar + separar particion home (Separa la carpeta de los usuarios a otro disco)""")
+		2.- LVM Cifrado (Crea una particion cifrada y dentro unidades logicas LVM)""")
 	opt=input("> ")
 
 	if (opt == "1"):
