@@ -211,7 +211,8 @@ def instalar_sistema_base():
 		os.system("clear")
 
 		os.system("arch-chroot /mnt pacman --noconfirm -S zsh zsh-syntax-highlighting")
-		os.system("arch-chroot /mnt cd /usr/share && wget https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting/master/zsh-syntax-highlighting.zsh")
+		os.system("arch-chroot /mnt mkdir /usr/share/zsh-syntax-highlighting")
+		os.system("arch-chroot /mnt cd /usr/share/zsh-syntax-highlighting && wget https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting/master/zsh-syntax-highlighting.zsh")
 		# Configurar zsh como shell por defecto 
 		os.system("cp configs/useradd /mnt/etc/default/useradd")
 
