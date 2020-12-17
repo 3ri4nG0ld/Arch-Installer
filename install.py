@@ -209,6 +209,19 @@ def instalar_sistema_base():
 				pass
 		os.system("arch-chroot /mnt pacman --noconfirm -S rsync lsof which")
 		os.system("clear")
+
+		os.system("arch-chroot /mnt pacman --noconfirm -S zsh")
+		# Configurar zsh como shell por defecto 
+		os.system("cp configs/useradd /mnt/etc/default/useradd")
+
+		# Instalar carpeta skel configurada
+		os.system("rm -rf /mnt/etc/skel")
+		os.system("cp configs/skel/ /mnt/etc/")
+
+
+
+		os.system("clear")
+		# Crear un usuario principal
 		while True:
 			print("Desea Crear un usuario principal?? (Y/n)")
 			print("* Con permisos de sudo")
@@ -231,7 +244,14 @@ def instalar_sistema_base():
 			else:
 				pass
 
-		os.system("arch-chroot /mnt pacman --noconfirm -S htop screenfetch neofetch zsh")
+		os.system("clear")
+
+
+
+
+
+
+		
 
 	os.system("loadkeys es") # Carga el teclado en Español
 	# if ls /sys/firmware/efi/efivars == true --> Modo UEFI --> else =  Modo BIOS
