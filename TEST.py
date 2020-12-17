@@ -1,1 +1,3 @@
-print("lvcreate -l +100%FREE vol -n root")
+text="HOLA"
+text=text.lower()
+print(text)

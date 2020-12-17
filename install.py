@@ -216,6 +216,7 @@ def instalar_sistema_base():
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
 				os.system("clear")
 				username = input("Usuario: ")
+				username=username.lower()
 				os.system(f"arch-chroot /mnt useradd -m {username} -G sudo")
 				os.system("arch-chroot /mnt passwd brian")
 				os.system("clear")
