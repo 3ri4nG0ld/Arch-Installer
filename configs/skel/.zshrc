@@ -162,7 +162,7 @@ function man() {
 
 
 
-new_line_before_prompt=yes
+new_line_before_prompt=no
 precmd() {
     # Print the previously configured title
     print -Pnr -- "$TERM_TITLE"
@@ -229,7 +229,7 @@ alias lsn='/usr/bin/ls'
 alias ls='lsd --group-dirs=first'
 
 
-alias cat='/usr/bin/batcat --pager=never'
+alias cat='/usr/bin/bat --pager=never'
 alias catn='/usr/bin/cat'
 alias nano='nano -l -m'
 alias sudo='sudo '

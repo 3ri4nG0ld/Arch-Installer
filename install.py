@@ -211,7 +211,7 @@ def instalar_sistema_base():
 		os.system("clear")
 		os.system("pacman --noconfirm -S wget")
 
-		os.system("arch-chroot /mnt pacman --noconfirm -S zsh zsh-syntax-highlighting fzf")
+		os.system("arch-chroot /mnt pacman --noconfirm -S zsh zsh-syntax-highlighting fzf bat lsd")
 		#os.system("arch-chroot /mnt mkdir /usr/share/zsh-syntax-highlighting")
 		#os.system("cd /mnt/usr/share/zsh-syntax-highlighting && wget https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting/master/zsh-syntax-highlighting.zsh")
 		
@@ -222,6 +222,9 @@ def instalar_sistema_base():
 		os.system("rm -rf /mnt/etc/skel")
 		os.system("cp -r configs/skel/ /mnt/etc/")
 
+		#Instalar scripts genericos
+		os.system("sudo chmod +x scripts/genericos/*")
+		os.system("sudo cp scripts/genericos/* /mnt/usr/bin/")
 
 		# Instalar configuracion fzf
 		os.system("sudo mkdir /mnt/etc/fzf")

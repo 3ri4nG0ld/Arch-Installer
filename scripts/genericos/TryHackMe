@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+
+import os,subprocess,sys
+
+vpn="TryHackMe"
+#vpn="HackTheBox"
+
+
+def checkear_procesos():
+	command = subprocess.check_output(['ps', 'aux'])
+	if (("sudo openvpn" in command.decode()) and ((vpn + ".ovpn") in command.decode())):
+		# Esta activo
+		return True
+	else:
+		# Esta inactivo
+		return False
+		
+def obtener_dpi():
+	command = subprocess.check_output(['ps', 'aux'])
+	command = command.decode()
+	command = command.split("\n")
+	for elements in command:
+		if ((vpn + ".ovpn" in elements) and ("openvpn" in elements)):
+			command=elements
+			break
+	command=command.replace(" ","")
+	command = command.split("0.0")
+	command = command[0].replace("root","")
+	return command
+		
+		
+def cerrar_vpn():
+	if (checkear_procesos()):
+		print("Finalizando Conexión...")
+		os.system("sudo echo '' >> /dev/null")
+		os.system("sudo kill -9 " + str(obtener_dpi()) + " 2>&1 >> /dev/null")
+		os.system("sudo kill -9 " + str(obtener_dpi()) + " 2>&1 >> /dev/null")
+	else:
+		print(vpn+ " ya esta cerrado")
+def reiniciar_vpn():
+	cerrar_vpn()
+	abrir_vpn()
+def abrir_vpn():
+	if (checkear_procesos()):
+		opt=input("El proceso ya existe quieres reiniciarlo??(Yes/no): ")
+		if((opt == "YES") or (opt == "yes") or (opt == "y") or (opt == "Y")):
+			reiniciar_vpn()
+	else:
+		print("Iniciando Conexión...")
+		os.system("sudo echo '' >> /dev/null")
+		os.system("sudo openvpn ~/.config/VPNs/"+ vpn +".ovpn 2>&1 >> /dev/null &")
+
+
+
+
+#---- MAIN ----
+
+try:
+	if (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
+		print(f"""Modo de empleo: {vpn} [OPCIÓN]...
+
+Este script requiere que exista el siguiente fichero: 
+~/.config/VPNs/{vpn}.ovpn
+
+Argumentos opcionales:
+  -h, --help			Muestra este menu de ayuda.
+  start				Inicia una conexión a la VPN de {vpn}
+  stop				Finaliza la conexión de la VPN
+  restart			Reinicia la conexión de la VPN
+  status			Checkea el estado de la conexión""")
+		quit()
+except IndexError:
+	pass
+	
+try:
+	if (sys.argv[1] == "start"):
+		abrir_vpn()
+		quit()
+except IndexError:
+	pass
+
+
+try:
+	if (sys.argv[1] == "stop"):
+		cerrar_vpn()
+		quit()
+except IndexError:
+	pass
+
+try:
+	if (sys.argv[1] == "status"):
+		if (checkear_procesos()):
+			print(f"La conexión con {vpn} esta abierta")
+		else:
+			print(f"La conexión con {vpn} esta cerrada")
+		quit()
+except IndexError:
+	pass
+
+
+try:
+	if (sys.argv[1] == False):
+		pass
+except IndexError:
+	print("No hay parametros")
+	abrir_vpn()
