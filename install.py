@@ -169,7 +169,7 @@ def instalar_sistema_base():
 			os.system("arch-chroot /mnt sudo chown -R yayuser /home/yayuser/yay")
 			os.system("clear")
 			os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yayuser/yay && makepkg -si'")
-			os.system("clear")
+
 
 
 			# Elimina yayuser de sudoers
@@ -272,38 +272,6 @@ def instalar_sistema_base():
 		#instalar yay
 		instalar_yay()
 
-
-		
-		# Crear un usuario principal
-		os.system("clear")
-		while True:
-			print("Desea Crear un usuario principal?? (Y/n)")
-			print("* Con permisos de sudo")
-			opt = input("> ")
-			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
-				os.system("clear")
-				print("Introduce Tu nombre de usuario (* solo minusculas)")
-				username = input("Usuario: ")
-				os.system("clear")
-				print("Escribe Tu nombre completo")
-				full_name = input("Nombre Completo: ")
-				username=username.lower()
-				os.system(f"arch-chroot /mnt useradd -m {username} -c '{full_name}' -G sudo")
-				os.system(f"arch-chroot /mnt passwd {username}")
-				os.system("clear")
-				os.system("modprobe ecryptfs")
-				os.system("clear")
-				print("Introduzca la contraseña para cifrar carpeta del usuario: ")
-				os.system(f"arch-chroot /mnt ecryptfs-migrate-home --user '{username}'") # Cifra la carpeta del usuario principal (--nopwcheck no funciona)
-				os.system(f"rm -rf /mnt/home/{username}.*")
-				os.system("rm -rf /mnt/etc/pam.d/system-auth")
-				os.system("cp configs/system-auth /mnt/etc/pam.d/system-auth")
-				break
-			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
-				break
-			else:
-				pass
-
 		# Añadir Entorno de escritorio
 		os.system("clear")
 		while True:
@@ -376,6 +344,35 @@ def instalar_sistema_base():
 				elif ((opt == "") or (opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
 					break
 			elif ((opt_de == "N") or (opt_de == "n") or (opt_de == "no") or (opt_de == "NO")):
+				break
+			else:
+				pass
+		# Crear un usuario principal
+		os.system("clear")
+		while True:
+			print("Desea Crear un usuario principal?? (Y/n)")
+			print("* Con permisos de sudo")
+			opt = input("> ")
+			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("clear")
+				print("Introduce Tu nombre de usuario (* solo minusculas)")
+				username = input("Usuario: ")
+				os.system("clear")
+				print("Escribe Tu nombre completo")
+				full_name = input("Nombre Completo: ")
+				username=username.lower()
+				os.system(f"arch-chroot /mnt useradd -m {username} -c '{full_name}' -G sudo")
+				os.system(f"arch-chroot /mnt passwd {username}")
+				os.system("clear")
+				os.system("modprobe ecryptfs")
+				os.system("clear")
+				print("Introduzca la contraseña para cifrar carpeta del usuario: ")
+				os.system(f"arch-chroot /mnt ecryptfs-migrate-home --user '{username}'") # Cifra la carpeta del usuario principal (--nopwcheck no funciona)
+				os.system(f"rm -rf /mnt/home/{username}.*")
+				os.system("rm -rf /mnt/etc/pam.d/system-auth")
+				os.system("cp configs/system-auth /mnt/etc/pam.d/system-auth")
+				break
+			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
 				break
 			else:
 				pass
