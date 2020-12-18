@@ -357,7 +357,7 @@ def instalar_sistema_base():
 				pass
 
 		#instalar YAY
-		os.system("useradd -m yayuser -G sudo")# crea un usuario pa la instalacion
+		os.system("useradd -m yayuser -G sudo")# crea un usuario pa la instalacion !BORAR MAS TARDE ----------------------------------------------------------------
 		os.system("arch-chroot /mnt pacman --noconfirm -S fakeroot go")
 		os.system("arch-chroot /mnt pacman -S --noconfirm --needed git base-devel")
 
