@@ -255,7 +255,7 @@ def instalar_sistema_base():
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
 
 					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit polybar picom rofi mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
 
 					os.system("clear")
 					print("Elije drivers graficos: ")
