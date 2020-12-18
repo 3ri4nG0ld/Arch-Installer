@@ -288,8 +288,8 @@ def instalar_sistema_base():
 					os.system("sudo chmod 555 /mnt/usr/local/share/fonts/*")
 
 					#install 
-					os.system("arch-chroot /mnt cd /tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && make && sudo make install")
-					os.system("arch-chroot /mnt cd /tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && make && sudo make install")
+					os.system("cd /mnt/tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
+					os.system("cd /mnt/tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
 
 
 				elif (opt == "2"):
