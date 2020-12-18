@@ -357,12 +357,13 @@ def instalar_sistema_base():
 				pass
 
 		#instalar YAY
+		os.system("useradd -m yayuser -G sudo")# crea un usuario pa la instalacion
 		os.system("arch-chroot /mnt pacman --noconfirm -S fakeroot go")
 		os.system("arch-chroot /mnt pacman -S --noconfirm --needed git base-devel")
 
 		os.system(f"git clone https://aur.archlinux.org/yay.git /mnt/home/yay")
 		os.system("sudo chmod 777 /mnt/home/yay")
-		os.system(f"arch-chroot /mnt su {username} -c 'cd /home/yay && makepkg /home/yay -si'")
+		os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yay && makepkg /home/yay -si'")
 
 		#instalar polybar
 		if (((opt_de=="y") or (opt_de == "Y") or (opt_de == "yes") or (opt_de == "YES")) and (opt_de_type == "1")):
