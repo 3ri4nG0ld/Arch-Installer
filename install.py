@@ -244,18 +244,18 @@ def instalar_sistema_base():
 
 		while True:
 			print("Desea Instalar un Escritorio?? (y/n)")
-			opt = input("> ")
-			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+			opt_de = input("> ")
+			if ((opt_de=="y") or (opt_de == "Y") or (opt_de == "yes") or (opt_de == "YES")):
 				os.system("clear")
 				print("Que escritorio quieres instalar??")
 				print("1.- BSPWM")
 				print("2.- XFCE4")
-				opt = input("> ")
-				if (opt == "1"):
+				opt_de_type = input("> ")
+				if (opt_de_type == "1"):
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
 
 					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit polybar picom rofi mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit picom rofi mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
 
 					os.system("clear")
 					print("Elije drivers graficos: ")
@@ -292,7 +292,15 @@ def instalar_sistema_base():
 					elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
 						os.system("echo -e 'sxhkd &\nexec bspwm' > /mnt/etc/skel/.xinitrc")
 
+		
 
+
+
+
+
+
+
+			
 
 					#instalar cuentes
 					os.system("mkdir /mnt/usr/local/share/fonts/")
@@ -304,7 +312,7 @@ def instalar_sistema_base():
 					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
 
 
-				elif (opt == "2"):
+				elif (opt_de_type == "2"):
 					print("Instalar XFCE4") # introducir qui codigo instalacion XFCE4
 				print("quieres instalar otro escritorio??(y/N)")
 				opt = input("> ")
@@ -312,10 +320,11 @@ def instalar_sistema_base():
 					pass
 				elif ((opt == "") or (opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
 					break
-			elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+			elif ((opt_de == "N") or (opt_de == "n") or (opt_de == "no") or (opt_de == "NO")):
 				break
 			else:
 				pass
+
 
 		os.system("clear")
 		# Crear un usuario principal
@@ -347,7 +356,12 @@ def instalar_sistema_base():
 			else:
 				pass
 
+		#instalar YAY
+		os.system(f"arch-chroot /mnt sudo git clone https://aur.archlinux.org/yay-git.git && cd yay-git && su {username} -c makepkg -si")
 
+		#instalar polybar
+		if (((opt_de=="y") or (opt_de == "Y") or (opt_de == "yes") or (opt_de == "YES")) and (opt_de_type == "1")):
+			os.system("arch-chroot /mnt yay -Sy polybar")
 
 
 		
