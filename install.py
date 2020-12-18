@@ -238,6 +238,84 @@ def instalar_sistema_base():
 		os.system("sudo chmod 555 /mnt/etc/fzf/fzf.zsh")
 
 
+		
+
+		os.system("clear")
+
+		while True:
+			print("Desea Instalar un Escritorio?? (y/n)")
+			opt = input("> ")
+			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("clear")
+				print("Que escritorio quieres instalar??")
+				print("1.- BSPWM 2.- XFCE4")
+				opt = input("> ")
+				if (opt == "1"):
+					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
+
+					#Instala las dependencias y el escritorio
+					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+
+					os.system("clear")
+					print("Elije drivers graficos: ")
+					print("1.- INTEL")
+					print("2.- AMD")
+					print("3.- NVIDIA")
+					print("4.- VMware")
+
+					opt=input("> ")
+					if(opt == "1"):
+						os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-intel intel-ucode")
+
+					elif(opt == "2"):
+						os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-amdgpu amd-ucode")
+
+					elif(opt == "3"):
+						print("Propietarios o Libres??")
+						print("1.- Propietarios (* desarrollados por NVIDIA)")
+						print("2.- Libres (* de codigo abierto)")
+						opt=input("> ")
+						if(opt == "1"):
+							os.system("arch-chroot /mnt pacman --noconfirm -S nvidia nvidia-utils")
+						elif(opt == "2"):
+							os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-nouveau")
+
+					elif(opt == "4"):
+						os.system("arch-chroot /mnt pacman --noconfirm -S open-vm-tools xf86-input-vmmouse xf86-video-vmware")
+
+					os.system("clear")
+					print("Desea instalar LigthDM??(y/n)")
+					opt=input("> ")
+					if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+						os.system("arch-chroot /mnt pacman --noconfirm -S ligthdm")
+					elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+						os.system("echo -e 'sxhkd &\nexec bspwm' > /mnt/skel/.xinitrc")
+
+
+
+					#instalar cuentes
+					os.system("mkdir /mnt/usr/local/share/fonts/")
+					os.system("sudo cp fonts/* /mnt/usr/local/share/fonts/")
+					os.system("sudo chmod 555 /mnt/usr/local/share/fonts/*")
+
+					#install 
+					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
+					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
+
+
+				elif (opt == "2"):
+					print("Instalar XFCE4") # introducir qui codigo instalacion XFCE4
+				print("quieres instalar otro escritorio??(y/N)")
+				opt = input("> ")
+				if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+					pass
+				elif ((opt == "") or (opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+					break
+			elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
+				break
+			else:
+				pass
+
 		os.system("clear")
 		# Crear un usuario principal
 		while True:
@@ -265,80 +343,6 @@ def instalar_sistema_base():
 				break
 			else:
 				pass
-
-		os.system("clear")
-
-		while True:
-			print("Desea Instalar un Escritorio?? (y/n)")
-			opt = input("> ")
-			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
-				os.system("clear")
-				print("Que escritorio quieres instalar??")
-				print("1.- BSPWM 2.- XFCE4")
-				opt = input("> ")
-				if (opt == "1"):
-					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
-
-					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
-
-					print("Elije drivers graficos: ")
-					print("1.- INTEL")
-					print("2.- AMD")
-					print("3.- NVIDIA")
-					print("4.- VMware")
-
-					opt=input("> ")
-					if(opt == "1"):
-						os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-intel intel-ucode")
-
-					elif(opt == "2"):
-						os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-amdgpu amd-ucode")
-
-					elif(opt == "3"):
-						print("Propietarios o Libres??")
-						print("1.- Propietarios (* desarrollados por NVIDIA)")
-						print("2.- Libres (* de codigo abierto)")
-						opt=input("> ")
-						if(opt == "1"):
-							os.system("arch-chroot /mnt pacman --noconfirm -S nvidia nvidia-utils")
-						elif(opt == "2"):
-							os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-nouveau")
-
-					elif(opt == "4"):
-						os.system("arch-chroot /mnt pacman --noconfirm -S open-vm-tools xf86-input-vmmouse xf86-video-vmware svga-dri")
-
-
-
-
-
-
-
-
-					#instalar cuentes
-					os.system("mkdir /mnt/usr/local/share/fonts/")
-					os.system("sudo cp fonts/* /mnt/usr/local/share/fonts/")
-					os.system("sudo chmod 555 /mnt/usr/local/share/fonts/*")
-
-					#install 
-					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
-					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
-
-
-				elif (opt == "2"):
-					print("Instalar XFCE4") # introducir qui codigo instalacion XFCE4
-				print("quieres instalar otro escritorio??(y/N)")
-				opt = input("> ")
-				if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
-					pass
-				elif ((opt == "") or (opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
-					break
-			elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
-				break
-			else:
-				pass
-
-
 
 
 
