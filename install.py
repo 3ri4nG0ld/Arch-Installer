@@ -152,6 +152,36 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=ArchLinux --recheck")
 		os.system("arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg")
 	def configuracion_basica():
+		def instalar_yay():
+			
+			# crea el usuario yayuser
+			os.system("arch-chroot /mnt useradd -m yayuser")# crea un usuario pa la instalacion !BORAR MAS TARDE ----------------------------------------------------------------
+			
+			# Añade el usuario yayuser al archivo sudoers
+			os.system("echo 'yayuser ALL=(ALL:ALL) NOPASSWD: ALL' > /mnt/etc/sudoers.d/yayuser")
+
+			#instalar dependencias de yay
+			os.system("arch-chroot /mnt pacman --noconfirm -S fakeroot go")
+			os.system("arch-chroot /mnt pacman -S --noconfirm --needed git base-devel")
+
+			# Instala yay usando el usuario yayuser
+			os.system(f"arch-chroot /mnt git clone https://aur.archlinux.org/yay.git /home/yayuser/yay")
+			os.system("arch-chroot /mnt sudo chown -R yayuser /home/yayuser/yay")
+			os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yayuser/yay && makepkg -si'")
+
+
+
+			# Elimina yayuser de sudoers
+			#os.system("rm -rf /mnt/etc/sudoers.d/yayuser")
+
+			# Elimina el usuario yayuser
+			#os.system("arch-chroot /mnt userdel yayuser")
+
+
+			return
+
+
+
 		os.system("arch-chroot /mnt pacman --noconfirm -S sudo networkmanager ecryptfs-utils")
 		os.system("arch-chroot /mnt systemctl enable NetworkManager")
 
@@ -356,6 +386,10 @@ def instalar_sistema_base():
 			else:
 				pass
 
+
+
+
+		instalar_yay()
 		#instalar YAY
 		os.system("arch-chroot /mnt useradd -m yayuser -G sudo")# crea un usuario pa la instalacion !BORAR MAS TARDE ----------------------------------------------------------------
 		os.system("arch-chroot /mnt pacman --noconfirm -S fakeroot go")
