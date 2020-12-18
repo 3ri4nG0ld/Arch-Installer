@@ -324,10 +324,10 @@ def instalar_sistema_base():
 			print("* Con permisos de sudo")
 			opt = input("> ")
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
-				os.system("clear")
+				#os.system("clear")
 				print("Introduce Tu nombre de usuario (* solo minusculas)")
 				username = input("Usuario: ")
-				os.system("clear")
+				#os.system("clear")
 				print("Escribe Tu nombre completo")
 				full_name = input("Nombre Completo: ")
 				username=username.lower()
