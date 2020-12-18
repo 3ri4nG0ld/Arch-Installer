@@ -258,6 +258,8 @@ def instalar_sistema_base():
 		# Instalar carpeta skel configurada
 		os.system("rm -rf /mnt/etc/skel")
 		os.system("cp -r configs/skel/ /mnt/etc/")
+		os.system("chmod +x /mnt/etc/skel/.config/bspwm/bspwmrc")
+		os.system("chmod +x /mnt/etc/skel/.config/sxhkd/sxhkdrc")
 
 		#Instalar scripts genericos
 		os.system("sudo chmod +x scripts/genericos/*")
