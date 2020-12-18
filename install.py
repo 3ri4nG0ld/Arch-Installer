@@ -248,7 +248,8 @@ def instalar_sistema_base():
 			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
 				os.system("clear")
 				print("Que escritorio quieres instalar??")
-				print("1.- BSPWM 2.- XFCE4")
+				print("1.- BSPWM")
+				print("2.- XFCE4")
 				opt = input("> ")
 				if (opt == "1"):
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
@@ -289,7 +290,7 @@ def instalar_sistema_base():
 					if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
 						os.system("arch-chroot /mnt pacman --noconfirm -S ligthdm")
 					elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
-						os.system("echo -e 'sxhkd &\nexec bspwm' > /mnt/skel/.xinitrc")
+						os.system("echo -e 'sxhkd &\nexec bspwm' > /mnt/etc/skel/.xinitrc")
 
 
 
