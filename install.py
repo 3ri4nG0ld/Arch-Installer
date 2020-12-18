@@ -172,10 +172,10 @@ def instalar_sistema_base():
 
 
 			# Elimina yayuser de sudoers
-			#os.system("rm -rf /mnt/etc/sudoers.d/yayuser")
+			os.system("rm -rf /mnt/etc/sudoers.d/yayuser")
 
 			# Elimina el usuario yayuser
-			#os.system("arch-chroot /mnt userdel yayuser")
+			os.system("arch-chroot /mnt userdel yayuser")
 
 
 			return
@@ -268,10 +268,43 @@ def instalar_sistema_base():
 		os.system("sudo chmod 555 /mnt/etc/fzf/fzf.zsh")
 
 
+		#instalar yay
+		instalar_yay()
+
+
 		
-
+		# Crear un usuario principal
 		os.system("clear")
+		while True:
+			print("Desea Crear un usuario principal?? (Y/n)")
+			print("* Con permisos de sudo")
+			opt = input("> ")
+			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
+				os.system("clear")
+				print("Introduce Tu nombre de usuario (* solo minusculas)")
+				username = input("Usuario: ")
+				os.system("clear")
+				print("Escribe Tu nombre completo")
+				full_name = input("Nombre Completo: ")
+				username=username.lower()
+				os.system(f"arch-chroot /mnt useradd -m {username} -c '{full_name}' -G sudo")
+				os.system(f"arch-chroot /mnt passwd {username}")
+				os.system("clear")
+				os.system("modprobe ecryptfs")
+				os.system("clear")
+				print("Introduzca la contraseña para cifrar carpeta del usuario: ")
+				os.system(f"arch-chroot /mnt ecryptfs-migrate-home --user '{username}'") # Cifra la carpeta del usuario principal (--nopwcheck no funciona)
+				os.system(f"rm -rf /mnt/home/{username}.*")
+				os.system("rm -rf /mnt/etc/pam.d/system-auth")
+				os.system("cp configs/system-auth /mnt/etc/pam.d/system-auth")
+				break
+			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
+				break
+			else:
+				pass
 
+		# Añadir Entorno de escritorio
+		os.system("clear")
 		while True:
 			print("Desea Instalar un Escritorio?? (y/n)")
 			opt_de = input("> ")
@@ -286,6 +319,7 @@ def instalar_sistema_base():
 
 					#Instala las dependencias y el escritorio
 					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit picom rofi mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+					os.system("arch-chroot /mnt yay --noconfirm -Sy polybar")
 
 					os.system("clear")
 					print("Elije drivers graficos: ")
@@ -322,16 +356,6 @@ def instalar_sistema_base():
 					elif ((opt == "N") or (opt == "n") or (opt == "no") or (opt == "NO")):
 						os.system("echo -e 'sxhkd &\nexec bspwm' > /mnt/etc/skel/.xinitrc")
 
-		
-
-
-
-
-
-
-
-			
-
 					#instalar cuentes
 					os.system("mkdir /mnt/usr/local/share/fonts/")
 					os.system("sudo cp fonts/* /mnt/usr/local/share/fonts/")
@@ -356,52 +380,9 @@ def instalar_sistema_base():
 				pass
 
 
-		os.system("clear")
-		# Crear un usuario principal
-		while True:
-			print("Desea Crear un usuario principal?? (Y/n)")
-			print("* Con permisos de sudo")
-			opt = input("> ")
-			if ((opt=="y") or (opt == "Y") or (opt == "yes") or (opt == "YES")):
-				os.system("clear")
-				print("Introduce Tu nombre de usuario (* solo minusculas)")
-				username = input("Usuario: ")
-				os.system("clear")
-				print("Escribe Tu nombre completo")
-				full_name = input("Nombre Completo: ")
-				username=username.lower()
-				os.system(f"arch-chroot /mnt useradd -m {username} -c '{full_name}' -G sudo")
-				os.system(f"arch-chroot /mnt passwd {username}")
-				os.system("clear")
-				os.system("modprobe ecryptfs")
-				os.system("clear")
-				print("Introduzca la contraseña para cifrar carpeta del usuario: ")
-				os.system(f"arch-chroot /mnt ecryptfs-migrate-home --user '{username}'") # Cifra la carpeta del usuario principal (--nopwcheck no funciona)
-				os.system(f"rm -rf /mnt/home/{username}.*")
-				os.system("rm -rf /mnt/etc/pam.d/system-auth")
-				os.system("cp configs/system-auth /mnt/etc/pam.d/system-auth")
-				break
-			elif (opt == "N" or opt == "n" or opt == "no" or opt == "NO"):
-				break
-			else:
-				pass
+		
 
-
-
-
-		instalar_yay()
-		#instalar YAY
-		os.system("arch-chroot /mnt useradd -m yayuser -G sudo")# crea un usuario pa la instalacion !BORAR MAS TARDE ----------------------------------------------------------------
-		os.system("arch-chroot /mnt pacman --noconfirm -S fakeroot go")
-		os.system("arch-chroot /mnt pacman -S --noconfirm --needed git base-devel")
-
-		os.system(f"arch-chroot /mnt git clone https://aur.archlinux.org/yay.git /home/yayuser/yay")
-		os.system("arch-chroot /mnt sudo chown -R yayuser /home/yayuser/yay")
-		os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yayuser/yay && makepkg -si'")
-
-		#instalar polybar
-		if (((opt_de=="y") or (opt_de == "Y") or (opt_de == "yes") or (opt_de == "YES")) and (opt_de_type == "1")):
-			os.system("arch-chroot /mnt yay -Sy polybar")
+			
 
 
 		
