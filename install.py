@@ -363,7 +363,7 @@ def instalar_sistema_base():
 
 		os.system(f"arch-chroot /mnt git clone https://aur.archlinux.org/yay.git /home/yayuser/yay")
 		os.system("arch-chroot /mnt sudo chown -R yayuser /home/yayuser/yay")
-		os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yayuser/yay && sudo makepkg -si'")
+		os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yayuser/yay && makepkg -si'")
 
 		#instalar polybar
 		if (((opt_de=="y") or (opt_de == "Y") or (opt_de == "yes") or (opt_de == "YES")) and (opt_de_type == "1")):
