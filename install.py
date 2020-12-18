@@ -283,14 +283,13 @@ def instalar_sistema_base():
 					os.system("arch-chroot /mnt pacman --noconfirm -S bspwm qterminal fonts-firacode git")
 
 					#instalar cuentes
+					os.system("mkdir /mnt/usr/local/share/fonts/")
 					os.system("sudo cp fonts/* /mnt/usr/local/share/fonts/")
 					os.system("sudo chmod 555 /mnt/usr/local/share/fonts/*")
 
 					#install 
-					os.system("arch-chroot /mnt git clone https://github.com/baskerville/bspwm.git")
-					os.system("arch-chroot /mnt git clone https://github.com/baskerville/sxhkd.git")
-					os.system("arch-chroot /mnt cd bspwm && make && sudo make install")
-					os.system("arch-chroot /mnt cd sxhkd && make && sudo make install")
+					os.system("arch-chroot /mnt cd /tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && make && sudo make install")
+					os.system("arch-chroot /mnt cd /tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && make && sudo make install")
 
 
 				elif (opt == "2"):
