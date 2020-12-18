@@ -332,7 +332,7 @@ def instalar_sistema_base():
 				full_name = input("Nombre Completo: ")
 				username=username.lower()
 				os.system(f"arch-chroot /mnt useradd -m {username} -c '{full_name}' -G sudo")
-				os.system("arch-chroot /mnt passwd brian")
+				os.system(f"arch-chroot /mnt passwd {username}")
 				os.system("clear")
 				os.system("modprobe ecryptfs")
 				os.system(f"arch-chroot /mnt ecryptfs-migrate-home --nopwcheck -u {username}") # Cifra la carpeta del usuario principal
