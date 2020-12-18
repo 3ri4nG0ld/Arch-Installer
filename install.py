@@ -167,8 +167,9 @@ def instalar_sistema_base():
 			# Instala yay usando el usuario yayuser
 			os.system(f"arch-chroot /mnt git clone https://aur.archlinux.org/yay.git /home/yayuser/yay")
 			os.system("arch-chroot /mnt sudo chown -R yayuser /home/yayuser/yay")
+			os.system("clear")
 			os.system(f"arch-chroot /mnt su yayuser -c 'cd /home/yayuser/yay && makepkg -si'")
-
+			os.system("clear")
 
 
 			# Elimina yayuser de sudoers
