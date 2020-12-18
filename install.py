@@ -280,7 +280,7 @@ def instalar_sistema_base():
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
 
 					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm qterminal fonts-firacode git")
+					os.system("arch-chroot /mnt pacman --noconfirm -S feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
 
 					#instalar cuentes
 					os.system("mkdir /mnt/usr/local/share/fonts/")
@@ -288,8 +288,8 @@ def instalar_sistema_base():
 					os.system("sudo chmod 555 /mnt/usr/local/share/fonts/*")
 
 					#install 
-					os.system("cd /mnt/tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
-					os.system("cd /mnt/tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
+					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/bspwm.git && cd bspwm && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
+					#os.system("cd /mnt/tmp && git clone https://github.com/baskerville/sxhkd.git && cd sxhkd && arch-chroot /mnt make && arch-chroot /mnt sudo make install")
 
 
 				elif (opt == "2"):

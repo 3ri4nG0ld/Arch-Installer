@@ -1,0 +1,295 @@
+[colors]
+;---[ Colores de fondo ]---+
+background = #000000
+background-alt = #444
+background-bspwm = #444
+background-eth = #444
+background-wlan = #444
+background-fecha = #444
+background-hora = #444
+background-volume = #444
+background-battery = #444
+background-thm = #444
+background-tray = #444
+background-whoami = #444
+
+
+;---[ Colores de Letra ]---+
+foreground = #ffffff
+foreground-alt = #555
+foreground-bspwm = #fff
+foreground-eth = #fff
+foreground-wlan = #fff
+foreground-fecha = #fff
+foreground-hora = #fff
+foreground-volume = #fff
+foreground-battery = #fff
+foreground-whoami = #fff
+
+;---[ Colores de Letra ]---+
+icon-thm = #ff0000
+icon-htb = #00ff00
+
+
+;---[ Otros Colores ]---+
+
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+alpha = #00000000
+
+[options]
+generic-pading=3
+
+;------------------------------------------------------ BAR Config
+[bar/bar]
+width = 100%
+height = 30
+fixed-center = true
+bottom = true
+
+background = ${colors.alpha}
+foreground = #ffffff
+
+
+;border-size = 4
+border-right-size=5
+border-left-size=5
+border-bottom-size=5
+border-top-size=0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = fixed:pixelsize=11;2
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;2
+font-3 = TryHackMe :pixelsize=18;3
+font-4 = Hack Nerd Font Mono :pixelsize=18;3
+
+
+modules-left = whoami bspwm
+modules-center =
+modules-right = wlan eth HackTheBox TryHackMe battery pulseaudio fecha hora 
+
+tray-position = right
+tray-padding = ${options.generic-pading}
+tray-background = ${colors.background-tray}
+
+;wm-restack = bspwm
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+
+
+;------------------------------------------------------ Modulo bspwm
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = "  "
+label-focused-padding = ${options.generic-pading}
+label-focused-foreground = ${colors.foreground-bspwm}
+label-focused-background = ${colors.background-bspwm}
+
+label-occupied = "  "
+label-occupied-padding = ${options.generic-pading}
+label-occupied-foreground = ${colors.foreground-bspwm}
+label-occupied-background = ${colors.background-bspwm}
+
+label-urgent = "  "
+label-urgent-padding = ${options.generic-pading}
+label-urgent-foreground = ${colors.foreground-bspwm}
+label-urgent-background = ${colors.background-bspwm}
+
+label-empty = "  "
+label-empty-padding = ${options.generic-pading}
+label-empty-foreground = ${colors.foreground-bspwm}
+label-empty-background = ${colors.background-bspwm}
+
+; Separator in between workspaces
+;label-separator = "|"
+;label-separator-background = ${colors.background-bspwm}
+;label-separator-foreground = ${colors.foreground-bspwm}
+
+;------------------------------------------------------ Modulo wlan0
+[module/wlan]
+type = internal/network
+interface = wlan0
+interval = 3.0
+format-connected = "%{A1:notify-send ($(iwconfig wlan0 | grep "wlan0" | cut '"' -f2)) $(ip addr show eth0 | grep '/24' | cut -d ' ' -f 6 ):} <label-connected> %{A}"
+format-connected-prefix = " "
+label-connected = "%local_ip%"
+
+format-connected-foreground = ${colors.foreground-wlan}
+format-connected-background = ${colors.background-wlan}
+format-connected-padding = ${options.generic-pading}
+
+;------------------------------------------------------ Modulo eth0
+[module/eth]
+type = internal/network
+interface = eth0
+interval = 3.0
+format-connected = "%{A1:notify-send $(ip addr show eth0 | grep '/24' | cut -d ' ' -f 6 ):} <label-connected> %{A}"
+format-connected-prefix = " "
+format-connected-prefix-foreground = #ffffff
+label-connected = "%local_ip%"
+
+format-connected-background = ${colors.background-eth}
+format-connected-padding = ${options.generic-pading}
+
+
+;------------------------------------------------------ Modulo fecha
+[module/fecha]
+type = internal/date
+interval = 5
+
+date = " [%d/%m/%Y]"
+label = "%date%"
+
+format-background = ${colors.background-fecha}
+format-padding = ${options.generic-pading}
+
+;------------------------------------------------------ Modulo fecha
+[module/hora]
+type = internal/date
+interval = 5
+
+time = " %I:%M"
+label = "%time%"
+
+format-background = ${colors.background-hora}
+format-padding = ${options.generic-pading}
+
+;------------------------------------------------------ Modulo Volumen
+[module/pulseaudio]
+type = internal/pulseaudio
+use-ui-max = false
+
+format-volume = "<ramp-volume> <label-volume>"
+
+ramp-volume-0 = ""
+ramp-volume-1 = ""
+ramp-volume-2 = ""
+
+label-volume = " %percentage%%"
+label-volume-foreground = ${colors.foreground-volume}
+
+label-muted = "ﱝ %percentage%%"
+label-muted-foreground = #ff0f0f
+
+format-volume-background = ${colors.background-volume}
+format-volume-padding = ${options.generic-pading}
+
+format-muted-background = ${colors.background-volume}
+format-muted-padding = ${options.generic-pading}
+
+;click-right = pavucontrol
+
+
+;------------------------------------------------------ Modulo bateria
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 100
+
+label-charging = "%percentage%%"
+label-discharging = "%percentage%%"
+
+format-charging = "<animation-charging> <label-charging>"
+format-charging-background = ${colors.background-battery}
+format-charging-padding = ${options.generic-pading}
+
+
+format-discharging = "<ramp-capacity> <label-discharging>"
+format-discharging-background = ${colors.background-battery}
+format-discharging-padding = ${options.generic-pading}
+
+
+format-full-prefix = " "
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+
+animation-charging-framerate = 750
+
+
+
+;------------------------------------------------------ Modulo whoami
+[module/whoami]
+type = custom/script
+exec = getent passwd $USER | cut -d ":" -f 5 | sed -s 's/,,,//g'
+tail = false
+
+format = "%{A1:thunar &:} <label>%{A}"
+format-background = ${colors.background-whoami}
+format-foreground = ${colors.foreground-whoami}
+format-padding = ${options.generic-pading}
+
+
+
+;------------------------------------------------------ Modulo TryHackMe
+[module/TryHackMe]
+type = custom/script
+exec = ip addr show tun0 | grep 'scope global tun0' | cut -d ' ' -f 6 | tr "/" " " | cut -d ' ' -f 1
+exec-if = check_vpn_TryHackMe
+
+format = " <label>"
+format-prefix = " "
+format-prefix-foreground = ${colors.icon-thm}
+
+format-background = ${colors.background-thm}
+format-padding = ${options.generic-pading}
+
+;------------------------------------------------------ Modulo HackTheBox
+[module/HackTheBox]
+type = custom/script
+exec = ip addr show tun0 | grep 'scope global tun0' | cut -d ' ' -f 6 | tr "/" " " | cut -d ' ' -f 1
+exec-if = check_vpn_HackTheBox
+
+format = " <label>"
+format-prefix = " "
+format-prefix-foreground = ${colors.icon-htb}
+
+format-background = ${colors.background-thm}
+format-padding = ${options.generic-pading}
+
+
+
+;------------------------------------------------------ Otros ajustes
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+; vim:ft=dosini
