@@ -360,7 +360,7 @@ def instalar_sistema_base():
 		os.system("arch-chroot /mnt pacman --noconfirm -S fakeroot go")
 		os.system("pacman -S --noconfirm --needed git base-devel")
 
-		os.system(f"git clone https://aur.archlinux.org/yay.git")
+		os.system(f"git clone https://aur.archlinux.org/yay.git /mnt/home/yay")
 		os.system("sudo chmod 777 /mnt/home/yay")
 		os.system(f"arch-chroot /mnt su {username} -c makepkg /mnt/home/yay -si")
 
