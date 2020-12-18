@@ -280,7 +280,40 @@ def instalar_sistema_base():
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
 
 					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+
+					print("Elije drivers graficos: ")
+					print("1.- INTEL")
+					print("2.- AMD")
+					print("3.- NVIDIA")
+					print("4.- VMware")
+
+					opt=input("> ")
+					if(opt == "1"):
+						os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-intel intel-ucode")
+
+					elif(opt == "2"):
+						os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-amdgpu amd-ucode")
+
+					elif(opt == "3"):
+						print("Propietarios o Libres??")
+						print("1.- Propietarios (* desarrollados por NVIDIA)")
+						print("2.- Libres (* de codigo abierto)")
+						opt=input("> ")
+						if(opt == "1"):
+							os.system("arch-chroot /mnt pacman --noconfirm -S nvidia nvidia-utils")
+						elif(opt == "2"):
+							os.system("arch-chroot /mnt pacman --noconfirm -S xf86-video-nouveau")
+
+					elif(opt == "4"):
+						os.system("arch-chroot /mnt pacman --noconfirm -S open-vm-tools xf86-input-vmmouse xf86-video-vmware svga-dri")
+
+
+
+
+
+
+
 
 					#instalar cuentes
 					os.system("mkdir /mnt/usr/local/share/fonts/")
