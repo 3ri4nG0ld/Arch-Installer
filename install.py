@@ -280,7 +280,7 @@ def instalar_sistema_base():
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
 
 					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S bspwm qterminal fonts-firacode git")
+					os.system("arch-chroot /mnt pacman --noconfirm -S libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm qterminal fonts-firacode git")
 
 					#instalar cuentes
 					os.system("mkdir /mnt/usr/local/share/fonts/")
