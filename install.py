@@ -289,8 +289,8 @@ def instalar_sistema_base():
 					print("Instalar BSPWM") # introducir qui codigo instalacion BSPWM
 
 					#Instala las dependencias y el escritorio
-					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit picom rofi mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
-					os.system("arch-chroot /mnt yay --noconfirm -Sy polybar")
+					os.system("arch-chroot /mnt pacman --noconfirm -S xorg-server xorg-xinit xorg-setroot xcompmgr rofi mesa mesa-demos feh libxcb xcb-util xcb-util-wm xcb-util-keysyms bspwm sxhkd qterminal ttf-fira-code git")
+					os.system(f"arch-chroot /mnt su {username} -c 'yay --noconfirm -Sy polybar'")
 
 					os.system("clear")
 					print("Elije drivers graficos: ")
@@ -318,6 +318,7 @@ def instalar_sistema_base():
 
 					elif(opt == "4"):
 						os.system("arch-chroot /mnt pacman --noconfirm -S open-vm-tools xf86-input-vmmouse xf86-video-vmware")
+						os.system("arch-chroot /mnt systemctl enable vmtoolsd.service")
 
 					os.system("clear")
 					print("Desea instalar LigthDM??(y/n)")
